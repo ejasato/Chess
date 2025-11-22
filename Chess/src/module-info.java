@@ -6,5 +6,5 @@
  */
 module Chess {
 	
-	//whats up
+	//What's up
 }
