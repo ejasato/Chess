@@ -76,6 +76,7 @@ public class Piece {
 	
 	public boolean isSameSquare(int targetCol, int targetRow) {
 		
+		
 	}
 	
 	public boolean pieceIsOnStraightLine(int targetCol, int targetRow) {
