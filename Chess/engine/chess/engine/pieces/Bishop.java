@@ -6,12 +6,12 @@ public class Bishop  extends Piece{
 		
 		type = Type.BISHOP;
 		
-		if (color == Game.WHITE){
-			image = getImage(); //white bishop image
-		}
-		else {
-			image = getImage();//black bishop image
-		}
+		// if (color == Game.WHITE){
+		// 	image = getImage(); //white bishop image
+		// }
+		// else {
+		// 	image = getImage();//black bishop image
+		// }
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {
@@ -19,7 +19,7 @@ public class Bishop  extends Piece{
 		if(isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow) == false) {
 			
 			if (Math.abs(targetCol - preCol) == Math.abs(targetRow-preRow)) {
-				if (isValidSquare(targetCol, targetRow) && pieceIsOnDiagonalLine(tagetCol, targetRow_ == false)) {
+				if (isValidSquare(targetCol, targetRow) && pieceIsOnDiagonalLine(targetCol, targetRow) == false) {
 					return true;
 				}
 			}
