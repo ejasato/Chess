@@ -1,10 +1,13 @@
 package chess.engine.pieces;
 
 public class Piece {
-	public int x, y;
-	public int col, row, preCol, preRow;
-	public int color;
-	public Piece toCapture;
+
+	protected Type type;
+	protected int x, y;
+	protected int col, row, preCol, preRow;
+	protected int color;
+	protected Piece toCapture;
+	//protected Image image;
 	
 	// constructor
 	public Piece(int col, int row, int color) {
@@ -18,10 +21,10 @@ public class Piece {
 	}
 	
 	// Image display for a piece
-	public Image getImage(String imagePath) {
-		Image image = null;
+	// public Image getImage(String imagePath) {
+	// 	Image image = null;
 		
-	}
+	// }
 	
 	public int getX(int col) {
 		return // return current piece position in the x

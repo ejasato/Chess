@@ -7,12 +7,12 @@ public class King extends Piece{
 		
 		Type type = Type.KING;
 		
-		if (color == GamePanel.White) {
-			Image image = getImage();  // white king
-		}
-		else {
-			Image image = getImage(); // black king
-		}
+		// if (color == GamePanel.White) {
+		// 	Image image = getImage();  // white king
+		// }
+		// else {
+		// 	Image image = getImage(); // black king
+		// }
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {

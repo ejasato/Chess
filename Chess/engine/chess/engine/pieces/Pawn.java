@@ -7,12 +7,12 @@ public class Pawn extends Piece{
 		
 		Type type = Type.PAWN;
 		
-		if (color == GamePanel.WHITE) {
-			image = getImage(); // white pawn
-		}
-		else {
-			image = getImage(); // black pawn
-		}
+		// if (color == GamePanel.WHITE) {
+		// 	image = getImage(); // white pawn
+		// }
+		// else {
+		// 	image = getImage(); // black pawn
+		// }
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {
