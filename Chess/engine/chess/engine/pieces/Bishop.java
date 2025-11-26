@@ -1,17 +1,19 @@
 package chess.engine.pieces;
 
+import main.BoardState;
+
 public class Bishop  extends Piece{
 	public Bishop(int col,int row, int color) {
 		super(col, row, color);
 		
 		type = Type.BISHOP;
 		
-		// if (color == Game.WHITE){
-		// 	image = getImage(); //white bishop image
-		// }
-		// else {
-		// 	image = getImage();//black bishop image
-		// }
+		 if (color == BoardState.WHITE){
+		 	image = getImage("/Chess/images/Chess_blt60.png"); //white bishop image
+		 }
+		 else {
+		 	image = getImage("/Chess/images/Chess_bdt60.png");//black bishop image
+		 }
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {

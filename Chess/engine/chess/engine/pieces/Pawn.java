@@ -7,12 +7,12 @@ public class Pawn extends Piece{
 		
 		type = Type.PAWN;
 		
-		// if (color == GamePanel.WHITE) {
-		// 	image = getImage(); // white pawn
-		// }
-		// else {
-		// 	image = getImage(); // black pawn
-		// }
+		 if (color == GamePanel.WHITE) {
+		 	image = getImage("/Chess/images/Chess_plt60.png"); // white pawn
+		 }
+		 else {
+		 	image = getImage("/Chess/images/Chess_pdt60.png"); // black pawn
+		 }
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {
@@ -47,7 +47,7 @@ public class Pawn extends Piece{
 			}
 					
 			// En Passant
-			if (Math.abs(targetCol - preCol) == 1 && targetRow == preRow + movaValue) {
+			if (Math.abs(targetCol - preCol) == 1 && targetRow == preRow + moveValue) {
 				for (Piece piece : GamePanel.simPieces) {
 					if (piece.col == targetCol && piece.row == preRow && piece.twoStepped == true) {
 						hittingP = piece;

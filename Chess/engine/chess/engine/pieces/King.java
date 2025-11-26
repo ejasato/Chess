@@ -1,5 +1,7 @@
 package chess.engine.pieces;
 
+import main.BoardState;
+
 public class King extends Piece{
 	
 	public King(int col, int row, int color) {
@@ -7,12 +9,12 @@ public class King extends Piece{
 		
 		type = Type.KING;
 		
-		// if (color == GamePanel.White) {
-		// 	Image image = getImage();  // white king
-		// }
-		// else {
-		// 	Image image = getImage(); // black king
-		// }
+		 if (color == BoardState.WHITE) {
+		 	image = getImage("/Chess/images/Chess_klt60.png");  // white king
+		 }
+		 else {
+		 	image = getImage("/Chess/images/Chess_kdt60.png"); // black king
+		 }
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {

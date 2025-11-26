@@ -6,12 +6,12 @@ public class Queen extends Piece{
 		
 		type = Type.QUEEN;
 		
-//		if (color == GamePanel.WHITE) {
-//			image = getImage(); // white queen
-//		}
-//		else {
-//			image = getImage();// black queen
-//		}
+		if (color == GamePanel.WHITE) {
+			image = getImage("/Chess/images/Chess_qlt60.png"); // white queen
+		}
+		else {
+			image = getImage("/Chess/images/Chess_qdt60.png");// black queen
+		}
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {

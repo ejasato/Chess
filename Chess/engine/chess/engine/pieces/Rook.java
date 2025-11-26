@@ -6,13 +6,13 @@ public class Rook extends Piece{
 		
 		type = Type.ROOK;
 		
-//		if (color == GamePanel.WHITE) {
-//			image = getImage(); // white rook
-//		}
-//		else {
-//			image = getImage();
-//		}
-//			
+		if (color == GamePanel.WHITE) {
+			image = getImage("/Chess/images/Chess_rdt60.png"); // white rook
+		}
+		else {
+			image = getImage("/Chess/images/Chess_rlt60.png");
+		}
+			
 	}
 	
 	public boolean canMove(int targetCol, int targetRow) {

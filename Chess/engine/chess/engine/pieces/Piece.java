@@ -1,20 +1,24 @@
 package chess.engine.pieces;
 
+import GUI.Board;
+import main.GamePanel;
+
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Piece {
+
+public abstract class Piece {
 
 	protected Type type;
-	protected int x, y;
-	protected int col, row, preCol, preRow;
+	public int x, y;
+	public int col, row, preCol, preRow;
 	protected int color;
 	protected Piece toCapture;
-	protected BufferedImage image;
+	public BufferedImage image;
 	protected boolean moved,  twoStepped;
-	private Piece hittingP;
+	public Piece hittingP;
 	
 	// constructor
 	public Piece(int col, int row, int color) {
@@ -40,6 +44,21 @@ public class Piece {
 		return image;
 	}
 	
+	public boolean getTwoStepped() {
+		return this.twoStepped;
+	}
+	
+	public void setTwoStepped(boolean value) {
+		this.twoStepped = value;
+	}
+	
+	public int getColor() {
+		return this.color;
+	}
+	
+	public Type getType() {
+		return this.type;
+	}
 	public int getX(int col) {
 		return  col*Board.SQUARE_SIZE;// return current piece position in the x
 	}
@@ -94,9 +113,7 @@ public class Piece {
 		
 	}
 	
-	public boolean canMove(int targetCol, int targetRow) {
-		return false;
-	}
+	public abstract boolean canMove(int targetCol, int targetRow) ;
 	
 	public boolean isWithinBoard(int targetCol, int targetRow) {
 		if (targetCol >= 0 && targetRow <= 7 &&
