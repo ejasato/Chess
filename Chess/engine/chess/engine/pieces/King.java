@@ -5,7 +5,7 @@ public class King extends Piece{
 	public King(int col, int row, int color) {
 		super(col, row, color);
 		
-		Type type = Type.KING;
+		type = Type.KING;
 		
 		// if (color == GamePanel.White) {
 		// 	Image image = getImage();  // white king
@@ -28,7 +28,7 @@ public class King extends Piece{
 			if (!moved) {
 				
 				// Right Castling
-				if (targetCol == preCol + 2 && target Row == preRow &&
+				if (targetCol == preCol + 2 && targetRow == preRow &&
 						!pieceIsOnStraightLine(targetCol, targetRow)) {
 					for (Piece piece : GamePanel.simPieces) {
 						if (piece.col == preCol + 3 && piece.row == preRow && !piece.moved) {
