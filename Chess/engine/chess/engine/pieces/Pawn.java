@@ -5,7 +5,7 @@ public class Pawn extends Piece{
 	public Pawn(int col, int row, int color) {
 		super(col, row, color);
 		
-		Type type = Type.PAWN;
+		type = Type.PAWN;
 		
 		// if (color == GamePanel.WHITE) {
 		// 	image = getImage(); // white pawn
