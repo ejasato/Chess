@@ -5,20 +5,15 @@ import chess.model.pieces.*;
 import java.util.Iterator;
 import chess.model.pieces.Type;
 
-/**
- * Represents an 8x8 chess board with Piece references.
- * Coordinates: col 0..7 (files a..h), row 0..7 (ranks 8..1).
- */
 public class Board {
 
-    // sizes used by Piece for drawing
     public static final int SQUARE_SIZE = 64;
     public static final int HALF_SQUARE_SIZE = SQUARE_SIZE / 2;
 
+    //2d array for the full chess board
     private final Piece[][] squares = new Piece[8][8];
-
-    // ---------- BASIC ACCESSORS ----------
-
+    
+    //checker to make sure the piece does not go outside of the 8x8 matrix
     public boolean isInside(int col, int row) {
         return col >= 0 && col < 8 && row >= 0 && row < 8;
     }
@@ -37,8 +32,7 @@ public class Board {
         }
     }
 
-    // ---------- MOVE EXECUTION / UNDO ----------
-
+    //How a piece moves and calls promotion, capture and moves that piece to that specific square
     public void makeMove(Move move) {
         Piece moving = getPiece(move.fromCol, move.fromRow);
         Piece captured = getPiece(move.toCol, move.toRow);
@@ -65,7 +59,8 @@ public class Board {
             promotePiece(move.toCol, move.toRow, moving.getColor(), move.promotionType);
         }
     }
-
+    
+    //Allows the player to undo a move
     public void undoMove(Move move) {
         Piece moving = move.moved;
         Piece captured = move.captured;
@@ -84,9 +79,8 @@ public class Board {
             GamePanel.simPieces.add(captured);
         }
     }
-
-    // ---------- PROMOTION HELPER ----------
-
+    
+    //Promotes a piece to one of four options
     private void promotePiece(int col, int row, int color, Type type) {
         Piece newPiece;
 
@@ -119,12 +113,8 @@ public class Board {
             }
         }
     }
-    private Piece movePieceAt(int col, int row) {
-        return getPiece(col, row);
-    }
-
-    // ---------- STARTING POSITION ----------
-
+    
+    //Puts each colors pieces in the specific 2D array position
     public void setupStartingPosition() {
         GamePanel.simPieces.clear();
 
@@ -164,14 +154,13 @@ public class Board {
             setAndAdd(new Pawn(c, 1, BLACK));
         }
     }
-
+    
+    //sets the pieces in the board for terminal use
     private void setAndAdd(Piece p) {
         setPiece(p.col, p.row, p);
         GamePanel.simPieces.add(p);
     }
-
-    // ---------- DEBUG PRINT ----------
-
+    //Prints the board for terminal use
     public void printBoard() {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {

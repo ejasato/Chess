@@ -10,7 +10,8 @@ import chess.model.pieces.GamePanel;
  * Positive = advantage for WHITE, Negative = advantage for BLACK.
  */
 public class Evaluator {
-
+	
+	//The amount of points these pieces are worth coming from Hans Berliner system
     private static final int PAWN = 100;
     private static final int KNIGHT = 320;
     private static final int BISHOP = 330;
@@ -18,6 +19,7 @@ public class Evaluator {
     private static final int QUEEN = 900;
     private static final int KING = 20000;
 
+    //evaluate the advantage between each player or chess engine by finding the difference between each players points associated with pieces
     public int evaluate(Board board) {
         int score = 0;
         for (int r = 0; r < 8; r++) {
@@ -31,7 +33,7 @@ public class Evaluator {
         }
         return score;
     }
-
+    //this turns the piece into a number corresponding to their points
     private int valueOf(Type t) {
         switch (t) {
             case PAWN: return PAWN;

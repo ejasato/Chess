@@ -17,19 +17,21 @@ public class Engine {
     private final MoveGenerator gen;
     private final Evaluator eval;
     private volatile boolean stop = false;
-
+    
+    //engine constructor
     public Engine(Board board) {
         this.board = board;
         this.gen = new MoveGenerator(board);
         this.eval = new Evaluator();
     }
-
+    
     public void stopSearch() { stop = true; }
-
+    
+    //finds the best move and gives a 0 second answer
     public Move findBestMove(int color, int maxDepth) {
         return findBestMove(color, maxDepth, 0L);
     }
-
+    //finds the best move and can be better moves depending on time
     public Move findBestMove(int color, int maxDepth, long timeMs) {
         stop = false;
         long endTime = timeMs > 0 ? System.currentTimeMillis() + timeMs : Long.MAX_VALUE;
@@ -60,7 +62,9 @@ public class Engine {
 
         return best;
     }
-
+    
+    //finds the best move by simulating all moves and branches off
+    //and picks the best branch with the best score
     private int alphaBeta(int color, int depth, int alpha, int beta, long endTime) {
         if (stop || System.currentTimeMillis() > endTime) return 0;
 
