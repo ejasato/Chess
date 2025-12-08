@@ -41,8 +41,9 @@ public class Board {
         move.captured = captured;
 
         if (moving != null) {
-            moving.preCol = moving.col;
-            moving.preRow = moving.row;
+
+            moving.col = move.toCol;
+            moving.row = move.toRow;
         }
 
         // remove captured from simPieces list

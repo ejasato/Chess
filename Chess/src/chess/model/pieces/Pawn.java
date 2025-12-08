@@ -1,5 +1,6 @@
 package chess.model.pieces;
 
+import chess.model.board.Board;
 
 public class Pawn extends Piece{
 	
@@ -16,48 +17,31 @@ public class Pawn extends Piece{
 		// }
 	}
 	
-	public boolean canMove(int targetCol, int targetRow) {
-		if (isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow) == false) {
-			
-			int moveValue;
-			
-			if (color == GamePanel.WHITE) {
-				moveValue = -1;
-			}
-			else {
-				moveValue = 1;
-			}
-			
-			Piece hittingP = getHittingP(targetCol, targetRow);
-			
-			// 1 square
-			if (targetCol == preCol && targetRow == preRow + moveValue && hittingP == null ) {
-				return true;
-			}
-			
-			//2 square
-			if (targetCol == preCol && targetRow == preRow + moveValue * 2 && hittingP == null && moved == false
-					&& pieceIsOnStraightLine(targetCol, targetRow) == false ) {
-			}
-					
-					
-			// diagonal movement & capture move
-			if (Math.abs(targetCol - preCol) == 1 && targetRow == preRow + moveValue && hittingP != null 
-					&& hittingP.color!=color) {
-				return true;
-			}
-					
-			// En Passant
-			if (Math.abs(targetCol - preCol) == 1 && targetRow == preRow + moveValue) {
-				for (Piece piece : GamePanel.simPieces) {
-					if (piece.col == targetCol && piece.row == preRow && piece.twoStepped == true) {
-						hittingP = piece;
-						return true;
-					}
-				}
-			}
-		}
-		
-		return false;
+    @Override
+    public boolean canMove(int tc, int tr, Board board) {
+        if (!inside(tc, tr)) return false;
+
+        int dir = (color == 0 ? -1 : 1); // white up, black down
+        int startRow = (color == 0 ? 6 : 1);
+
+        // --- Single step
+        if (tc == col && tr == row + dir) {
+            return board.getPiece(tc, tr) == null;
+        }
+
+        // --- Double step
+        if (tc == col && tr == row + 2 * dir && row == startRow) {
+            return board.getPiece(tc, row + dir) == null &&
+                   board.getPiece(tc, tr) == null;
+        }
+
+        // --- Capture
+        if (Math.abs(tc - col) == 1 && tr == row + dir) {
+            Piece target = board.getPiece(tc, tr);
+            return target != null && target.color != this.color;
+        }
+
+        // --- En passant will be handled by validator → always return false here
+        return false;
 	}
 }

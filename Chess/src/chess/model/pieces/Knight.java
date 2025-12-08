@@ -1,5 +1,7 @@
 package chess.model.pieces;
 
+import chess.model.board.Board;
+
 public class Knight extends Piece{
 	
 	public Knight(int col, int row, int color) {
@@ -16,17 +18,19 @@ public class Knight extends Piece{
 		
 	}
 	
-	public boolean canMove(int targetCol, int targetRow) {
-		if (isWithinBoard(targetCol, targetRow)) {
-			
-			if (Math.abs(targetCol -preCol) * Math.abs(targetRow - preRow) == 2) {
-				if (isValidSquare(targetCol, targetRow)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+
+    @Override
+    public boolean canMove(int tc, int tr, Board board) {
+        if (!inside(tc, tr)) return false;
+
+        int dc = Math.abs(tc - col);
+        int dr = Math.abs(tr - row);
+
+        if (dc * dr == 2) {
+            return canCaptureOrMove(tc, tr, board);
+        }
+        return false;
+    }
 	
 	
 }

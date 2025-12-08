@@ -1,5 +1,7 @@
 package chess.model.pieces;
 
+import chess.model.board.Board;
+
 public class Bishop  extends Piece{
 	public Bishop(int col,int row, int color) {
 		super(col, row, color);
@@ -14,19 +16,12 @@ public class Bishop  extends Piece{
 		// }
 	}
 	
-	public boolean canMove(int targetCol, int targetRow) {
-		
-		if(isWithinBoard(targetCol, targetRow) && isSameSquare(targetCol, targetRow) == false) {
-			
-			if (Math.abs(targetCol - preCol) == Math.abs(targetRow-preRow)) {
-				if (isValidSquare(targetCol, targetRow) && pieceIsOnDiagonalLine(targetCol, targetRow) == false) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-			
-	}
+
+    @Override
+    public boolean canMove(int tc, int tr, Board board) {
+        if (!inside(tc, tr)) return false;
+        if (!canCaptureOrMove(tc, tr, board)) return false;
+        return clearDiagonal(tc, tr, board);
+    }
 	
 }

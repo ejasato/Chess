@@ -1,5 +1,8 @@
 package chess.model.pieces;
 
+
+import chess.model.board.Board;
+
 public class Rook extends Piece{
 	public Rook(int col, int row, int color) {
 		super (col, row, color);
@@ -15,15 +18,12 @@ public class Rook extends Piece{
 //			
 	}
 	
-	public boolean canMove(int targetCol, int targetRow) {
-		if (isWithinBoard(targetCol, targetRow) && !isSameSquare(targetCol, targetRow)) {
-			
-			if(targetCol == preCol || targetRow == preRow) {
-				if (isValidSquare(targetCol, targetRow) && !pieceIsOnStraightLine(targetCol, targetRow)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+
+    @Override
+    public boolean canMove(int tc, int tr, Board board) {
+        if (!inside(tc, tr)) return false;
+        if (tc != col && tr != row) return false;
+        if (!canCaptureOrMove(tc, tr, board)) return false;
+        return clearStraight(tc, tr, board);
+    }
 }

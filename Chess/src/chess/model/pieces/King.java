@@ -1,5 +1,6 @@
 package chess.model.pieces;
 
+import chess.model.board.Board;
 
 public class King extends Piece{
 	
@@ -16,51 +17,18 @@ public class King extends Piece{
 		// }
 	}
 	
-	public boolean canMove(int targetCol, int targetRow) {
-		if (isWithinBoard(targetCol, targetRow)) {
-			if (Math.abs(targetCol - preCol) +
-					Math.abs(targetRow - preRow) ==1 || 
-				Math.abs(targetCol- preCol) * Math.abs(targetRow - preRow) == 1) {
-				if (isValidSquare(targetCol, targetRow)) {
-					return true;
-				}
-			}
-			// castling
-			if (!moved) {
-				
-				// Right Castling
-				if (targetCol == preCol + 2 && targetRow == preRow &&
-						!pieceIsOnStraightLine(targetCol, targetRow)) {
-					for (Piece piece : GamePanel.simPieces) {
-						if (piece.col == preCol + 3 && piece.row == preRow && !piece.moved) {
-							GamePanel.castlingP = piece;
-							return true;
-						}
-					}
-				}
-				
-				// Left Castling
-				
-				if (targetCol == preCol + 2 && targetRow == preRow && !pieceIsOnStraightLine(targetCol, targetRow)) {
-					Piece[] p = new Piece[2];
-					for (Piece piece : GamePanel.simPieces) {
-						if (piece.col == preCol - 3 && piece.row == targetRow) {
-							p[0] = piece;
-							
-						}
-						if (piece.col == preCol- 4&& piece.row == targetRow) {
-							p[1] = piece;
-							
-						}
-						if (p[0] == null && p[1] != null && !p[1].moved) {
-							GamePanel.castlingP = p[1];
-							return true;
-						}
-					}
-				}
-				
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean canMove(int tc, int tr, Board board) {
+        if (!inside(tc, tr)) return false;
+
+        int dc = Math.abs(tc - col);
+        int dr = Math.abs(tr - row);
+
+        if (dc <= 1 && dr <= 1) {
+            return canCaptureOrMove(tc, tr, board);
+        }
+
+        // castling added later if needed
+        return false;
+    }
 }

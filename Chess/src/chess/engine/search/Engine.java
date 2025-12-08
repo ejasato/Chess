@@ -7,10 +7,6 @@ import chess.model.move.Move;
 
 import java.util.List;
 
-/**
- * Simple engine: depth-limited alpha-beta with static evaluation.
- * Uses MoveGenerator + Board.makeMove/undoMove.
- */
 public class Engine {
 
     private final Board board;
