@@ -74,18 +74,18 @@ public class GameFrame extends JFrame {
 
         // Difficulty menu
         JMenu diffMenu = new JMenu("Difficulty");
-        JRadioButtonMenuItem easy   = new JRadioButtonMenuItem("Easy (Depth 2)", false);
-        JRadioButtonMenuItem medium = new JRadioButtonMenuItem("Medium (Depth 3)", true);
-        JRadioButtonMenuItem hard   = new JRadioButtonMenuItem("Hard (Depth 4)", false);
+        JRadioButtonMenuItem easy   = new JRadioButtonMenuItem("Easy (Depth 5)", false);
+        JRadioButtonMenuItem medium = new JRadioButtonMenuItem("Medium (Depth 10)", true);
+        JRadioButtonMenuItem hard   = new JRadioButtonMenuItem("Hard (Depth 20)", false);
 
         ButtonGroup diffGroup = new ButtonGroup();
         diffGroup.add(easy);
         diffGroup.add(medium);
         diffGroup.add(hard);
 
-        easy.addActionListener(e -> boardPanel.setAIDepth(2));
-        medium.addActionListener(e -> boardPanel.setAIDepth(3));
-        hard.addActionListener(e -> boardPanel.setAIDepth(4));
+        easy.addActionListener(e -> boardPanel.setAIDepth(5));
+        medium.addActionListener(e -> boardPanel.setAIDepth(10));
+        hard.addActionListener(e -> boardPanel.setAIDepth(20));
 
         diffMenu.add(easy);
         diffMenu.add(medium);
@@ -102,4 +102,8 @@ public class GameFrame extends JFrame {
         SwingUtilities.invokeLater(GameFrame::new);
     }
 }
+
+//public static void main(String[] args) {
+//    SwingUtilities.invokeLater(GameFrame::new);
+//}
 

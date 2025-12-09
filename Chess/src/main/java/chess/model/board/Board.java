@@ -4,6 +4,9 @@ import chess.model.move.Move;
 import chess.model.pieces.*;
 import java.util.Iterator;
 import chess.model.pieces.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Board {
 
@@ -179,4 +182,54 @@ public class Board {
         }
         System.out.println();
     }
+    public Board copy() {
+        Board b = new Board();
+
+        for (int r = 0; r < 8; r++) {
+            for (int c = 0; c < 8; c++) {
+
+                Piece p = this.squares[r][c];
+
+                if (p == null) {
+                    b.squares[r][c] = null;
+                    continue;
+                }
+
+                Piece clone = null;
+
+                switch (p.getType()) {
+                    case PAWN:
+                        clone = new Pawn(c, r, p.getColor());
+                        break;
+                    case ROOK:
+                        clone = new Rook(c, r, p.getColor());
+                        break;
+                    case KNIGHT:
+                        clone = new Knight(c, r, p.getColor());
+                        break;
+                    case BISHOP:
+                        clone = new Bishop(c, r, p.getColor());
+                        break;
+                    case QUEEN:
+                        clone = new Queen(c, r, p.getColor());
+                        break;
+                    case KING:
+                        clone = new King(c, r, p.getColor());
+                        break;
+                }
+
+                b.squares[r][c] = clone;
+            }
+        }
+
+        return b;
+    }
+
+
+    public List<Piece> getAllPieces() {
+        // Snapshot of *visible* game pieces (same list GUI uses)
+        return new ArrayList<>(GamePanel.simPieces);
+    }
+
+
 }

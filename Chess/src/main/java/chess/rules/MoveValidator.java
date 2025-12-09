@@ -2,8 +2,9 @@ package chess.rules;
 
 import chess.model.board.Board;
 import chess.model.move.Move;
-import chess.model.pieces.*;
 import chess.model.pieces.GamePanel;
+import chess.model.pieces.Piece;
+import chess.model.pieces.Type;
 
 public class MoveValidator {
 
@@ -28,7 +29,7 @@ public class MoveValidator {
 
             if (p.getColor() != enemy) continue;
 
-            // Updated to use board argument
+            // Use board-aware canMove
             if (p.canMove(king.col, king.row, board)) {
                 return true;
             }
@@ -38,7 +39,7 @@ public class MoveValidator {
     }
 
     /** -----------------------------------------------------------
-     *  Find the king
+     *  Find the king of a color
      * ----------------------------------------------------------- */
     private Piece findKing(int color) {
         for (Piece p : GamePanel.simPieces) {
@@ -51,14 +52,33 @@ public class MoveValidator {
 
     /** -----------------------------------------------------------
      *  Checks if a move is legal:
-     *  - must not leave king in check
+     *  - piece must exist & be correct color
+     *  - must obey piece movement rules
+     *  - must not leave own king in check
      * ----------------------------------------------------------- */
     public boolean isLegalMove(Move move, int color) {
 
-        board.makeMove(move);     // simulate
+        Piece moving = board.getPiece(move.fromCol, move.fromRow);
+        if (moving == null) {
+            return false;
+        }
+
+        // wrong color
+        if (moving.getColor() != color) {
+            return false;
+        }
+
+        // obey piece move rules first
+        if (!moving.canMove(move.toCol, move.toRow, board)) {
+            return false;
+        }
+
+        // simulate
+        board.makeMove(move);
         boolean inCheck = isKingInCheck(color);
-        board.undoMove(move);     // revert
+        board.undoMove(move);
 
         return !inCheck;
     }
 }
+

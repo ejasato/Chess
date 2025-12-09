@@ -44,4 +44,11 @@ public class Pawn extends Piece{
         // --- En passant will be handled by validator → always return false here
         return false;
 	}
+    @Override
+    public Piece copy() {
+        Rook r = new Rook(col, row, color);
+        r.setTwoStepped(this.twoStepped);
+        return r;
+    }
+
 }

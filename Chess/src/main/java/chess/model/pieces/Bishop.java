@@ -23,5 +23,11 @@ public class Bishop  extends Piece{
         if (!canCaptureOrMove(tc, tr, board)) return false;
         return clearDiagonal(tc, tr, board);
     }
-	
+    @Override
+    public Piece copy() {
+        Rook r = new Rook(col, row, color);
+        r.setTwoStepped(this.twoStepped);
+        return r;
+    }
+
 }
