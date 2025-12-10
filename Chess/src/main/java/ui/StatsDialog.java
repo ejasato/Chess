@@ -7,52 +7,109 @@ import java.awt.*;
 
 public class StatsDialog extends JDialog {
 
-    public StatsDialog(Frame parent, Player p) {
-        super(parent, "Player Stats", true);
+    public StatsDialog(Frame parent, Player player) {
+        super(parent, "Player Statistics", true);
 
-        setLayout(new BorderLayout());
-        JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout(15, 15));
+        setResizable(false);
 
-        // Title
-        JLabel title = new JLabel("Statistics for " + p.username);
-        title.setFont(new Font("Arial", Font.BOLD, 16));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
+        // Header
+        JLabel header = new JLabel("Statistics for: " + player.username, SwingConstants.CENTER);
+        header.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        header.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        add(header, BorderLayout.NORTH);
 
-        // Labels
-        JLabel whiteWins = new JLabel("White Wins: " + p.whiteWins);
-        JLabel blackWins = new JLabel("Black Wins: " + p.blackWins);
+        // Main content panel
+        JPanel center = new JPanel(new GridBagLayout());
+        center.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(6, 6, 6, 6);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        String bestWhite = (p.bestWhiteWinMoves == Integer.MAX_VALUE)
-                ? "None"
-                : p.bestWhiteWinMoves + " moves";
+        int row = 0;
 
-        String bestBlack = (p.bestBlackWinMoves == Integer.MAX_VALUE)
-                ? "None"
-                : p.bestBlackWinMoves + " moves";
+        // ------------------------------------
+        // Section: Human vs Human stats
+        // ------------------------------------
+        addSectionHeader(center, gbc, row++, "Human vs Human (1v1)");
+        addStat(center, gbc, row++, "White Wins:", String.valueOf(player.whiteWins));
+        addStat(center, gbc, row++, "Black Wins:", String.valueOf(player.blackWins));
 
-        JLabel bestWhiteWin = new JLabel("Best White Win: " + bestWhite);
-        JLabel bestBlackWin = new JLabel("Best Black Win: " + bestBlack);
+        row++; // Spacing
 
-        whiteWins.setFont(new Font("Arial", Font.PLAIN, 14));
-        blackWins.setFont(new Font("Arial", Font.PLAIN, 14));
-        bestWhiteWin.setFont(new Font("Arial", Font.PLAIN, 14));
-        bestBlackWin.setFont(new Font("Arial", Font.PLAIN, 14));
+        // ------------------------------------
+        // Section: AI mode stats (including Test Mode)
+        // ------------------------------------
+        addSectionHeader(center, gbc, row++, "Best Wins vs AI (Fewest Moves)");
 
-        panel.add(whiteWins);
-        panel.add(blackWins);
-        panel.add(bestWhiteWin);
-        panel.add(bestBlackWin);
+        // Test Mode (Depth = 1)
+        addStat(center, gbc, row++,
+                "Test Mode (Depth = 1):",
+                formatAiMoves(player.bestTestMoves));
 
-        add(title, BorderLayout.NORTH);
-        add(panel, BorderLayout.CENTER);
+        // Easy (Depth ≤ 5)
+        addStat(center, gbc, row++,
+                "Easy (Depth ≤ 5):",
+                formatAiMoves(player.bestEasyMoves));
 
+        // Medium (Depth ≤ 10)
+        addStat(center, gbc, row++,
+                "Medium (Depth ≤ 10):",
+                formatAiMoves(player.bestMediumMoves));
+
+        // Hard (Depth > 10)
+        addStat(center, gbc, row++,
+                "Hard (Depth > 10):",
+                formatAiMoves(player.bestHardMoves));
+
+        add(center, BorderLayout.CENTER);
+
+        // Close button
         JButton close = new JButton("Close");
+        close.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         close.addActionListener(e -> dispose());
-        add(close, BorderLayout.SOUTH);
 
-        setSize(300, 250);
+        JPanel bottom = new JPanel();
+        bottom.add(close);
+        add(bottom, BorderLayout.SOUTH);
+
+        pack();
         setLocationRelativeTo(parent);
         setVisible(true);
+    }
+
+    private String formatAiMoves(int moves) {
+        return (moves == Integer.MAX_VALUE ? "No wins yet" : moves + " moves");
+    }
+
+    private void addSectionHeader(JPanel panel, GridBagConstraints gbc, int row, String title) {
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.gridwidth = 2;
+
+        JLabel label = new JLabel(title);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        label.setForeground(new Color(50, 50, 50));
+
+        panel.add(label, gbc);
+
+        gbc.gridwidth = 1;
+    }
+
+    private void addStat(JPanel panel, GridBagConstraints gbc, int row, String key, String value) {
+        gbc.gridx = 0;
+        gbc.gridy = row;
+
+        JLabel keyLabel = new JLabel(key);
+        keyLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        panel.add(keyLabel, gbc);
+
+        gbc.gridx = 1;
+
+        JLabel valLabel = new JLabel(value);
+        valLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        valLabel.setForeground(new Color(20, 20, 20));
+        panel.add(valLabel, gbc);
     }
 }

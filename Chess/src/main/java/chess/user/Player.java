@@ -1,30 +1,35 @@
 package chess.user;
 
-public class Player {
+import java.io.Serializable;
 
+public class Player implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    // Account info
     public String username;
-    public String passwordHash;
+    public String password;
 
+    // 1v1 stats
     public int whiteWins = 0;
     public int blackWins = 0;
 
-    public int bestWhiteWinMoves = Integer.MAX_VALUE;
-    public int bestBlackWinMoves = Integer.MAX_VALUE;
+    // AI stats – fewest moves required to beat the AI
+    // Using Integer.MAX_VALUE = no wins yet
+    public int bestTestMoves = Integer.MAX_VALUE;    // Depth ≤ 5
+    public int bestEasyMoves = Integer.MAX_VALUE;    // Depth ≤ 5
+    public int bestMediumMoves = Integer.MAX_VALUE;  // Depth ≤ 10
+    public int bestHardMoves = Integer.MAX_VALUE;    // Depth > 10
 
-    public Player(String username, String passwordHash) {
+    // Constructor
+    public Player(String username, String password) {
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = password;
     }
 
-    public void recordWhiteWin(int moves) {
-        whiteWins++;
-        bestWhiteWinMoves = Math.min(bestWhiteWinMoves, moves);
-    }
+    // Empty constructor for serialization
+    public Player() {}
 
-    public void recordBlackWin(int moves) {
-        blackWins++;
-        bestBlackWinMoves = Math.min(bestBlackWinMoves, moves);
-    }
 }
 
 

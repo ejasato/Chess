@@ -8,6 +8,7 @@ public class PlayerDatabase {
     private static final String FILE = "players.json";
     private static HashMap<String, Player> players = new HashMap<>();
 
+
     /** Load players.json manually */
     public static void load() {
         try {
@@ -23,23 +24,29 @@ public class PlayerDatabase {
 
             br.close();
 
-            // Very simple parsing (we expect the exact format we write)
             String content = json.toString().trim();
             if (content.length() < 2) return;
 
-            String[] entries = content.substring(1, content.length() - 1).split("},");
+            // Remove outer braces
+            content = content.substring(1, content.length() - 1).trim();
+
+            // Split entries
+            String[] entries = content.split("},");
             for (String e : entries) {
                 if (!e.endsWith("}")) e += "}";
 
-                // Extract username
-                String name = e.substring(e.indexOf("\"") + 1, e.indexOf("\":"));
+                String username = e.substring(e.indexOf("\"") + 1, e.indexOf("\":"));
 
-                // Extract values
                 String body = e.substring(e.indexOf("{") + 1, e.lastIndexOf("}"));
                 String[] fields = body.split(",");
 
-                String pass = "";
-                int wWins = 0, bWins = 0, bestW = Integer.MAX_VALUE, bestB = Integer.MAX_VALUE;
+                String password = "";
+                int whiteWins = 0;
+                int blackWins = 0;
+                int bestTest = Integer.MAX_VALUE;
+                int bestEasy = Integer.MAX_VALUE;
+                int bestMedium = Integer.MAX_VALUE;
+                int bestHard = Integer.MAX_VALUE;
 
                 for (String f2 : fields) {
                     String[] kv = f2.split(":");
@@ -47,27 +54,33 @@ public class PlayerDatabase {
                     String val = kv[1].replace("\"", "").trim();
 
                     switch (key) {
-                        case "passwordHash": pass = val; break;
-                        case "whiteWins":    wWins = Integer.parseInt(val); break;
-                        case "blackWins":    bWins = Integer.parseInt(val); break;
-                        case "bestWhiteWinMoves": bestW = Integer.parseInt(val); break;
-                        case "bestBlackWinMoves": bestB = Integer.parseInt(val); break;
+                        case "password": password = val; break;
+                        case "whiteWins": whiteWins = Integer.parseInt(val); break;
+                        case "blackWins": blackWins = Integer.parseInt(val); break;
+
+                        case "bestTestMoves": bestTest = Integer.parseInt(val); break;
+                        case "bestEasyMoves": bestEasy = Integer.parseInt(val); break;
+                        case "bestMediumMoves": bestMedium = Integer.parseInt(val); break;
+                        case "bestHardMoves": bestHard = Integer.parseInt(val); break;
                     }
                 }
 
-                Player p = new Player(name, pass);
-                p.whiteWins = wWins;
-                p.blackWins = bWins;
-                p.bestWhiteWinMoves = bestW;
-                p.bestBlackWinMoves = bestB;
+                Player p = new Player(username, password);
+                p.whiteWins = whiteWins;
+                p.blackWins = blackWins;
+                p.bestTestMoves = bestTest;
+                p.bestEasyMoves = bestEasy;
+                p.bestMediumMoves = bestMedium;
+                p.bestHardMoves = bestHard;
 
-                players.put(name, p);
+                players.put(username, p);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
 
     /** Save database manually */
     public static void save() {
@@ -80,11 +93,13 @@ public class PlayerDatabase {
             for (Player p : players.values()) {
 
                 pw.println("  \"" + p.username + "\": {");
-                pw.println("    \"passwordHash\": \"" + p.passwordHash + "\",");
+                pw.println("    \"password\": \"" + p.password + "\",");
                 pw.println("    \"whiteWins\": " + p.whiteWins + ",");
                 pw.println("    \"blackWins\": " + p.blackWins + ",");
-                pw.println("    \"bestWhiteWinMoves\": " + p.bestWhiteWinMoves + ",");
-                pw.println("    \"bestBlackWinMoves\": " + p.bestBlackWinMoves);
+                pw.println("    \"bestTestMoves\": " + p.bestTestMoves + ",");
+                pw.println("    \"bestEasyMoves\": " + p.bestEasyMoves + ",");
+                pw.println("    \"bestMediumMoves\": " + p.bestMediumMoves + ",");
+                pw.println("    \"bestHardMoves\": " + p.bestHardMoves);
                 pw.print("  }");
 
                 if (++count < size) pw.println(",");
@@ -98,13 +113,13 @@ public class PlayerDatabase {
         }
     }
 
+
     public static Player get(String username) {
         return players.get(username);
     }
 
     public static Player create(String username, String password) {
-        String hash = Integer.toString(password.hashCode());
-        Player p = new Player(username, hash);
+        Player p = new Player(username, Integer.toString(password.hashCode()));
         players.put(username, p);
         save();
         return p;
@@ -113,13 +128,11 @@ public class PlayerDatabase {
     public static boolean validate(String username, String password) {
         Player p = players.get(username);
         if (p == null) return false;
-        return p.passwordHash.equals(Integer.toString(password.hashCode()));
+        return p.password.equals(Integer.toString(password.hashCode()));
     }
-    
+
     public static void update(Player p) {
         players.put(p.username, p);
         save();
     }
-
 }
-

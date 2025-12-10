@@ -13,7 +13,7 @@ public class GameFrame extends JFrame {
     private final JLabel statusLabel;
 
     public GameFrame() {
-        setTitle("Eric's Chess");
+        setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -78,42 +78,67 @@ public class GameFrame extends JFrame {
 
         // Difficulty menu
         JMenu diffMenu = new JMenu("Difficulty");
+        JRadioButtonMenuItem test   = new JRadioButtonMenuItem("Test (Depth 1)", false);
         JRadioButtonMenuItem easy   = new JRadioButtonMenuItem("Easy (Depth 5)", false);
         JRadioButtonMenuItem medium = new JRadioButtonMenuItem("Medium (Depth 10)", true);
         JRadioButtonMenuItem hard   = new JRadioButtonMenuItem("Hard (Depth 20)", false);
 
         ButtonGroup diffGroup = new ButtonGroup();
+        diffGroup.add(test);
         diffGroup.add(easy);
         diffGroup.add(medium);
         diffGroup.add(hard);
 
+        test.addActionListener(e -> boardPanel.setAIDepth(1));
         easy.addActionListener(e -> boardPanel.setAIDepth(5));
         medium.addActionListener(e -> boardPanel.setAIDepth(10));
         hard.addActionListener(e -> boardPanel.setAIDepth(20));
 
+        diffMenu.add(test);
         diffMenu.add(easy);
         diffMenu.add(medium);
+        diffMenu.add(hard);
+
 
         // ---------------------------
-        // ACCOUNT MENU (NEW)
-        // ---------------------------
-        JMenu accountMenu = new JMenu("Account");
-        JMenuItem viewStatsItem = new JMenuItem("View Stats");
+     // ---------------------------
+     // ACCOUNT MENU
+     // ---------------------------
+     JMenu accountMenu = new JMenu("Account");
 
-        viewStatsItem.addActionListener(e -> {
-            if (boardPanel.getCurrentPlayer() != null) {
-                new StatsDialog(this, boardPanel.getCurrentPlayer());
-            } else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "No player is logged in.",
-                        "No Account",
-                        JOptionPane.WARNING_MESSAGE
-                );
-            }
-        });
+     // Login / Switch account
+     JMenuItem loginItem = new JMenuItem("Login / Switch Account");
+     loginItem.addActionListener(e -> {
+         Player p = LoginDialog.showLogin();
+         if (p != null) {
+             boardPanel.setCurrentPlayer(p);
+             JOptionPane.showMessageDialog(
+                 this,
+                 "Logged in as: " + p.username,
+                 "Account Changed",
+                 JOptionPane.INFORMATION_MESSAGE
+             );
+         }
+     });
 
-        accountMenu.add(viewStatsItem);
+     // View Stats
+     JMenuItem viewStatsItem = new JMenuItem("View Stats");
+     viewStatsItem.addActionListener(e -> {
+         if (boardPanel.getCurrentPlayer() != null) {
+             new StatsDialog(this, boardPanel.getCurrentPlayer());
+         } else {
+             JOptionPane.showMessageDialog(
+                     this,
+                     "No player is logged in.",
+                     "No Account",
+                     JOptionPane.WARNING_MESSAGE
+             );
+         }
+     });
+
+     accountMenu.add(loginItem);
+     accountMenu.add(viewStatsItem);
+
 
         // Add all menus to bar
         bar.add(gameMenu);
@@ -133,10 +158,7 @@ public class GameFrame extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             PlayerDatabase.load();
-            Player loggedPlayer = LoginDialog.showLogin();
-
-            GameFrame frame = new GameFrame();
-            frame.getBoardPanel().setCurrentPlayer(loggedPlayer);
+            new GameFrame();  // No login at startup
         });
     }
 

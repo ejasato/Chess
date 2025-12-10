@@ -117,8 +117,12 @@ public class ChessPanel extends JPanel {
 	}
 
 	public void setCurrentPlayer(Player p) {
-		currentPlayer = p;
+	    currentPlayer = p;
+	    if (p != null) {
+	        statusLabel.setText("Logged in as: " + p.username);
+	    }
 	}
+
 
 	// SVG loading
 	private void loadAllSVGs() {
@@ -218,7 +222,9 @@ public class ChessPanel extends JPanel {
 		for (int c = 0; c < 8; c++) {
 			for (int r = 0; r < 8; r++) {
 				Move m = new Move(fc, fr, c, r);
-				if (selectedPiece.canMove(c, r, board) && validator.isLegalMove(m, currentColor))
+//				if (selectedPiece.canMove(c, r, board) && validator.isLegalMove(m, currentColor))
+//					legalMoves.add(m);
+				if (validator.isLegalMove(m, currentColor))
 					legalMoves.add(m);
 			}
 		}
@@ -288,13 +294,50 @@ public class ChessPanel extends JPanel {
 
 				// Record stats
 				if (currentPlayer != null) {
-					if (sideJustMoved == GamePanel.WHITE)
-						currentPlayer.whiteWins++;
-					else
-						currentPlayer.blackWins++;
 
-					PlayerDatabase.update(currentPlayer);
+				    // -------------------------
+				    // 1) HUMAN VS HUMAN (1v1)
+				    // -------------------------
+				    if (!vsComputer) {
+				        if (sideJustMoved == GamePanel.WHITE)
+				            currentPlayer.whiteWins++;
+				        else
+				            currentPlayer.blackWins++;
+
+				        PlayerDatabase.update(currentPlayer);
+				        return;
+				    }
+
+				    // -------------------------
+				    // 2) HUMAN VS AI
+				    // -------------------------
+				    // Only count human wins (human = WHITE)
+				    if (sideJustMoved == GamePanel.WHITE) {
+
+				        int moveCount = (historyPanel != null ? historyPanel.getMoveCount() : 0);
+
+				        // Depth groups
+				        if(aiDepth == 1) {
+				            currentPlayer.bestTestMoves =
+					                Math.min(currentPlayer.bestTestMoves, moveCount);
+				        }
+				        else if (aiDepth <= 5) {
+				            currentPlayer.bestEasyMoves =
+				                Math.min(currentPlayer.bestEasyMoves, moveCount);
+				        }
+				        else if (aiDepth <= 10) {
+				            currentPlayer.bestMediumMoves =
+				                Math.min(currentPlayer.bestMediumMoves, moveCount);
+				        }
+				        else {
+				            currentPlayer.bestHardMoves =
+				                Math.min(currentPlayer.bestHardMoves, moveCount);
+				        }
+
+				        PlayerDatabase.update(currentPlayer);
+				    }
 				}
+
 
 			} else {
 				lastWinner = null;

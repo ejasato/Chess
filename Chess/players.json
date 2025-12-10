@@ -1,16 +1,92 @@
 {
   "easato": {
-    "passwordHash": "99162322",
+    "password": "",
     "whiteWins": 1,
     "blackWins": 0,
-    "bestWhiteWinMoves": 2147483647,
-    "bestBlackWinMoves": 2147483647
+    "bestTestMoves": 2147483647,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "abc": {
+    "password": "96354",
+    "whiteWins": 0,
+    "blackWins": 0,
+    "bestTestMoves": 7,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "cral": {
+    "password": "3273964",
+    "whiteWins": 1,
+    "blackWins": 0,
+    "bestTestMoves": 2147483647,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "test": {
+    "password": "3556498",
+    "whiteWins": 0,
+    "blackWins": 0,
+    "bestTestMoves": 7,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
   },
   "ejasato": {
-    "passwordHash": "99162322",
+    "password": "",
     "whiteWins": 1,
     "blackWins": 0,
-    "bestWhiteWinMoves": 2147483647,
-    "bestBlackWinMoves": 2147483647
+    "bestTestMoves": 2147483647,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "Eric": {
+    "password": "2168487",
+    "whiteWins": 0,
+    "blackWins": 0,
+    "bestTestMoves": 2147483647,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "crapple": {
+    "password": "",
+    "whiteWins": 0,
+    "blackWins": 0,
+    "bestTestMoves": 2147483647,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "goop": {
+    "password": "94921146",
+    "whiteWins": 0,
+    "blackWins": 0,
+    "bestTestMoves": 2147483647,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "justin": {
+    "password": "-1148684527",
+    "whiteWins": 0,
+    "blackWins": 0,
+    "bestTestMoves": 2147483647,
+    "bestEasyMoves": 7,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
+  },
+  "john": {
+    "password": "3267851",
+    "whiteWins": 0,
+    "blackWins": 0,
+    "bestTestMoves": 7,
+    "bestEasyMoves": 2147483647,
+    "bestMediumMoves": 2147483647,
+    "bestHardMoves": 2147483647
   }
 }
