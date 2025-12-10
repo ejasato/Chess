@@ -1,0 +1,16 @@
+{
+  "easato": {
+    "passwordHash": "99162322",
+    "whiteWins": 1,
+    "blackWins": 0,
+    "bestWhiteWinMoves": 2147483647,
+    "bestBlackWinMoves": 2147483647
+  },
+  "ejasato": {
+    "passwordHash": "99162322",
+    "whiteWins": 1,
+    "blackWins": 0,
+    "bestWhiteWinMoves": 2147483647,
+    "bestBlackWinMoves": 2147483647
+  }
+}

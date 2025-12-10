@@ -1,5 +1,9 @@
 package ui;
 
+import chess.user.PlayerDatabase;
+import chess.user.LoginDialog;
+import chess.user.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -89,18 +93,53 @@ public class GameFrame extends JFrame {
 
         diffMenu.add(easy);
         diffMenu.add(medium);
-        diffMenu.add(hard);
 
+        // ---------------------------
+        // ACCOUNT MENU (NEW)
+        // ---------------------------
+        JMenu accountMenu = new JMenu("Account");
+        JMenuItem viewStatsItem = new JMenuItem("View Stats");
+
+        viewStatsItem.addActionListener(e -> {
+            if (boardPanel.getCurrentPlayer() != null) {
+                new StatsDialog(this, boardPanel.getCurrentPlayer());
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No player is logged in.",
+                        "No Account",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+        });
+
+        accountMenu.add(viewStatsItem);
+
+        // Add all menus to bar
         bar.add(gameMenu);
         bar.add(modeMenu);
         bar.add(diffMenu);
+        bar.add(accountMenu);
 
         return bar;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(GameFrame::new);
+
+    public ChessPanel getBoardPanel() {
+        return boardPanel;
     }
+
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            PlayerDatabase.load();
+            Player loggedPlayer = LoginDialog.showLogin();
+
+            GameFrame frame = new GameFrame();
+            frame.getBoardPanel().setCurrentPlayer(loggedPlayer);
+        });
+    }
+
 }
 
 //public static void main(String[] args) {

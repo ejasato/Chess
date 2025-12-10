@@ -6,6 +6,8 @@ import chess.model.pieces.Piece;
 import chess.model.pieces.Type;
 
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class MoveSimulator {
 
@@ -80,5 +82,104 @@ public class MoveSimulator {
 
         return !inCheck;
     }
+    
+    public boolean isSquareAttacked(int col, int row, int byColor) {
+
+        for (Piece p : board.getAllPieces()) {
+            if (p.getColor() != byColor) continue;
+
+            if (attacksSquare(p, col, row)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    private boolean attacksSquare(Piece p, int targetCol, int targetRow) {
+
+        int pc = p.col;
+        int pr = p.row;
+
+        switch (p.getType()) {
+
+            case PAWN:
+                int dir = (p.getColor() == 0 ? -1 : 1); // white up, black down
+                return (targetCol == pc - 1 || targetCol == pc + 1) &&
+                       targetRow == pr + dir;
+
+            case KNIGHT:
+                int dc = Math.abs(pc - targetCol);
+                int dr = Math.abs(pr - targetRow);
+                return (dc == 1 && dr == 2) || (dc == 2 && dr == 1);
+
+            case KING:
+                return Math.abs(pc - targetCol) <= 1 &&
+                       Math.abs(pr - targetRow) <= 1;
+
+            case BISHOP:
+                if (Math.abs(pc - targetCol) != Math.abs(pr - targetRow)) return false;
+                return clearDiagonal(pc, pr, targetCol, targetRow);
+
+            case ROOK:
+                if (pc != targetCol && pr != targetRow) return false;
+                return clearStraight(pc, pr, targetCol, targetRow);
+
+            case QUEEN:
+                if (pc == targetCol || pr == targetRow)
+                    return clearStraight(pc, pr, targetCol, targetRow);
+                if (Math.abs(pc - targetCol) == Math.abs(pr - targetRow))
+                    return clearDiagonal(pc, pr, targetCol, targetRow);
+                return false;
+        }
+
+        return false;
+    }
+    
+    private boolean clearStraight(int c1, int r1, int c2, int r2) {
+        int dc = Integer.signum(c2 - c1);
+        int dr = Integer.signum(r2 - r1);
+
+        int c = c1 + dc;
+        int r = r1 + dr;
+
+        while (c != c2 || r != r2) {
+            if (board.getPiece(c, r) != null) return false;
+            c += dc;
+            r += dr;
+        }
+        return true;
+    }
+
+    private boolean clearDiagonal(int c1, int r1, int c2, int r2) {
+        int dc = Integer.signum(c2 - c1);
+        int dr = Integer.signum(r2 - r1);
+
+        int c = c1 + dc;
+        int r = r1 + dr;
+
+        while (c != c2 || r != r2) {
+            if (board.getPiece(c, r) != null) return false;
+            c += dc;
+            r += dr;
+        }
+        return true;
+    }
+    
+    public List<Piece> getAttackersOfSquare(int col, int row, int byColor) {
+        List<Piece> attackers = new ArrayList<>();
+
+        for (Piece p : board.getAllPieces()) {
+            if (p.getColor() != byColor) continue;
+            if (attacksSquare(p, col, row)) {
+                attackers.add(p);
+            }
+        }
+
+        return attackers;
+    }
+
+
+
 }
 

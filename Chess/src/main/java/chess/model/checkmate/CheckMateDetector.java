@@ -79,16 +79,9 @@ public class CheckMateDetector {
     }
 
     private List<Piece> findAttackers(Piece king, int enemyColor) {
-        List<Piece> list = new ArrayList<>();
-
-        for (Piece p : board.getAllPieces()) {
-            if (p.getColor() == enemyColor &&
-                p.canMove(king.col, king.row, board)) {
-                list.add(p);
-            }
-        }
-        return list;
+        return simulator.getAttackersOfSquare(king.col, king.row, enemyColor);
     }
+
 
     private boolean canCaptureAttacker(Piece attacker, int color) {
         for (Piece ally : board.getAllPieces()) {
